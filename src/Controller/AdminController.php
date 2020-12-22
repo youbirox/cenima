@@ -51,11 +51,12 @@ class AdminController extends AbstractController
             $form->submit($request->request->get($form->getName()));
     
             if ($form->isSubmitted() && $form->isValid()) {
-                
-       
                 $em=$this->getDoctrine()->getManager();
-                $em->persist($acteur);
                 $em->persist($film);
+                $acteur->setFilm($film);
+                
+                $em->persist($acteur);
+                
                 $em->flush();
                 // perform some action...
                 $this->addFlash('success', 'Acteur a était bien ajouté');
@@ -64,7 +65,7 @@ class AdminController extends AbstractController
         }
 
         $em=$this->getDoctrine()->getRepository('App:Acteur')->findAll();
-        return $this->render('admin/Acteur.html.twig', [
+        return $this->render('admin/acteur.html.twig', [
             'controller_name' => 'AdminController',
             'form'  =>  $form->createView(),
             'acteur' => $em
@@ -88,6 +89,47 @@ class AdminController extends AbstractController
     {
         return $this->render('admin/genre.html.twig', [
             'controller_name' => 'AdminController',
+        ]);
+    }
+
+
+    /**
+     * @Route("/acteurDel/{id}", name="acteurDel")
+     */
+    public function acteurDel($id): Response
+    {
+        $em=$this->getDoctrine()->getManager();
+        $res = $em->getRepository(Acteur::class);
+        $Acteur=$res->find($id);
+        $em->remove($Acteur);
+        $em->flush(); 
+        $this->addFlash('danger', 'Acteur a était bien supprimé');
+        return $this->redirectToRoute('Acteur');
+    }
+
+    /**
+     * @Route("/acteurEdit/{id}", name="acteurEdit")
+     */
+    public function acteurEdit(Acteur $acteur,Request $request): Response
+    {
+        $form=$this->createForm(ActeurType::class,$acteur);
+
+        if ($request->isMethod('POST')) {
+            $form->submit($request->request->get($form->getName()));
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                
+       
+                $em=$this->getDoctrine()->getManager();
+                $em->flush();
+                // perform some action...
+                $this->addFlash('success', 'Acteur a était bien modifié');
+                return $this->redirectToRoute('Acteur');
+            }
+        }
+        return $this->render('admin/acteurEdit.html.twig', [
+            'controller_name' => 'AdminController',
+            'form'  =>  $form->createView(),
         ]);
     }
 }

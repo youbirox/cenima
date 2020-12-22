@@ -78,4 +78,25 @@ class Acteur
 
         return $this;
     }
+
+     
+    public function setFilm(\App\Entity\Film $film)
+    {
+        $this->film = $film;
+    }
+   
+    public function getFilm()
+    {
+        return $this->film;
+    }
+    
+    /**
+     * toString
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->film;
+    }
+
 }
