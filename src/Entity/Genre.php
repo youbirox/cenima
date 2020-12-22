@@ -22,6 +22,10 @@ class Genre
      */
     private $nom;
 
+     /**
+     * @ORM\OneToMany(targetEntity="Genre", mappedBy="genre")
+     */
+    private $genres;
     public function getId(): ?int
     {
         return $this->id;

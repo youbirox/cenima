@@ -48,11 +48,13 @@ class Film
      */
     private $acteurs;
 
-    public function __construct()
-    {
-        $this->acteurs = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity="Genre", inversedBy="films")
+     * @ORM\JoinColumn(name="genre_id", referencedColumnName="id")
+     */
+    private $genre;
 
+   
     public function getId(): ?int
     {
         return $this->id;
