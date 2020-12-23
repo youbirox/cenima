@@ -119,4 +119,22 @@ class Film
 
         return $this;
     }
+    public function setGenre(\App\Entity\Genre $genre)
+    {
+        $this->genre = $genre;
+    }
+   
+    public function getGenre()
+    {
+        return $this->genre;
+    }
+    
+    /**
+     * toString
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->genre;
+    }
 }
