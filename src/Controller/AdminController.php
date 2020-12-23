@@ -28,10 +28,24 @@ class AdminController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home(): Response
+    public function home(Request $request): Response
     {
+        $em=$this->getDoctrine()->getRepository(Film::class)->findAll();
         return $this->render('home.html.twig', [
             'controller_name' => 'AdminController',
+            'AllFilm' => $em
+        ]);
+    }
+
+    /**
+     * @Route("/Details/{id}", name="homeEdit")
+     */
+    public function homeEdit(Request $request): Response
+    {
+        //$em=$this->getDoctrine()->getRepository(Film::class)->findAll();
+        return $this->render('homeEdit.html.twig', [
+            'controller_name' => 'AdminController',
+            
         ]);
     }
 
@@ -224,5 +238,19 @@ class AdminController extends AbstractController
             'controller_name' => 'AdminController',
             'form'  =>  $form->createView(),
         ]);
+    }
+
+       /**
+     * @Route("/filmDel/{id}", name="filmDel")
+     */
+    public function filmDel($id): Response
+    {
+        $em=$this->getDoctrine()->getManager();
+        $res = $em->getRepository(Film::class);
+        $Film=$res->find($id);
+        $em->remove($Film);
+        $em->flush(); 
+        $this->addFlash('danger', 'film a était bien supprimé');
+        return $this->redirectToRoute('film');
     }
 }
