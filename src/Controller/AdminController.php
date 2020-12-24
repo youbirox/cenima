@@ -30,10 +30,19 @@ class AdminController extends AbstractController
      */
     public function home(Request $request): Response
     {
+        $genre= $request->request->get('genre');
+        $film= $request->request->get('film');
         $em=$this->getDoctrine()->getRepository(Film::class)->findAll();
+        $emG=$this->getDoctrine()->getRepository(Genre::class)->findAll();
+        $FOBN=$this->getDoctrine()->getRepository(Film::class)->findOneBy(['titre' => $film]);
+
         return $this->render('home.html.twig', [
             'controller_name' => 'AdminController',
-            'AllFilm' => $em
+            'AllFilm' => $em,
+            'AllGenre' => $emG,
+            'genre' => $genre,
+            'film' => $film,
+            'res' => $FOBN
         ]);
     }
 
@@ -42,7 +51,7 @@ class AdminController extends AbstractController
      */
     public function homeEdit(Request $request): Response
     {
-        //$em=$this->getDoctrine()->getRepository(Film::class)->findAll();
+        $em=$this->getDoctrine()->getRepository(Film::class)->findAll();
         return $this->render('homeEdit.html.twig', [
             'controller_name' => 'AdminController',
             
@@ -54,27 +63,43 @@ class AdminController extends AbstractController
      */
     public function Acteur(Request $request): Response
     {
+
+
         $acteur=new Acteur();
-        $film=new Film();
+       /* $film=new Film();
         $film->setTitre('titre1');
         $film->setDuree(15);
         $date = "01-09-2015";
         $film->setDateSortie(\DateTime::createFromFormat('d-m-Y', $date));
         $film->setNote(26);
-        $film->setAgeMinimal(24);
+        $film->setAgeMinimal(24);*/
         $form=$this->createForm(ActeurType::class,$acteur);
+        $emG=$this->getDoctrine()->getRepository('App:Film')->findAll();
 
         if ($request->isMethod('POST')) {
             $form->submit($request->request->get($form->getName()));
-    
+
             if ($form->isSubmitted() && $form->isValid()) {
-                $em=$this->getDoctrine()->getManager();
-                $em->persist($film);
-                $acteur->setFilm($film);
+                //$film=$this->$request->request->get('filmX');
+                $film=$request->request->get('FILM');
+                $ResFilm=$this->getDoctrine()->getRepository('App:Film')->findOneBy(['titre' => $film]);
+                if ($ResFilm === null) {
+                    # code...
+                    $em=$this->getDoctrine()->getManager();
+                    $em->persist($acteur);
+                
+                    $em->flush();
+                }else
+                {
+                    $em=$this->getDoctrine()->getManager();
+                //$em->persist($film);
+                $acteur->setFilm($ResFilm);
                 
                 $em->persist($acteur);
                 
                 $em->flush();
+                }
+                
                 // perform some action...
                 $this->addFlash('success', 'Acteur a était bien ajouté');
                 return $this->redirectToRoute('Acteur');
@@ -85,7 +110,9 @@ class AdminController extends AbstractController
         return $this->render('admin/acteur.html.twig', [
             'controller_name' => 'AdminController',
             'form'  =>  $form->createView(),
-            'acteur' => $em
+            'acteur' => $em,
+            'film'  => $emG,
+            
         ]);
     }
 
@@ -180,14 +207,18 @@ class AdminController extends AbstractController
     public function acteurEdit(Acteur $acteur,Request $request): Response
     {
         $form=$this->createForm(ActeurType::class,$acteur);
+        $emG=$this->getDoctrine()->getRepository('App:Film')->findAll();
 
         if ($request->isMethod('POST')) {
             $form->submit($request->request->get($form->getName()));
     
             if ($form->isSubmitted() && $form->isValid()) {
                 
-       
+                $film=$request->request->get('FILM');
+                $ResFilm=$this->getDoctrine()->getRepository('App:Film')->findOneBy(['titre' => $film]);
+
                 $em=$this->getDoctrine()->getManager();
+                $acteur->setFilm($ResFilm);
                 $em->flush();
                 // perform some action...
                 $this->addFlash('success', 'Acteur a était bien modifié');
@@ -197,6 +228,7 @@ class AdminController extends AbstractController
         return $this->render('admin/acteurEdit.html.twig', [
             'controller_name' => 'AdminController',
             'form'  =>  $form->createView(),
+            'film'  =>  $emG
         ]);
     }
 

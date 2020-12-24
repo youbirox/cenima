@@ -17,7 +17,10 @@ class FilmType extends AbstractType
         $builder
             ->add('titre')
             ->add('duree')
-            ->add('dateSortie')
+            ->add('dateSortie',DateType::class,array(
+                'widget' => 'choice',
+                'years' => range(date('Y'), date('Y')-100)
+              ))
             ->add('note')
             ->add('ageMinimal')
             ->add('Enregistrer', SubmitType::class)
