@@ -1,4 +1,73 @@
-{{ form_start(form) }}
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+  <title>Page Acteur</title>
+  <link rel="stylesheet" href="{{asset ('css/bootstrap.css')}}">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" 
+rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+ <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
+<div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                <a class="navbar-brand" href="#">Cinema</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarsExample09">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{path('home')}}">Accueil <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{path('Acteur')}}">Acteur</a>
+                        </li>
+                      
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{path('film')}}">Film</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{path('genre')}}">Genre</a>
+                        </li>
+                        
+                        
+                        
+                        
+                    </ul>
+                    
+                </div>
+            </nav>
+            <br><br>
+            <div class="row">
+    <div class="col-md-4">
+    <h3>Modifier l'acteur </h3>
+    {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+   {{ form_start(form) }}
     <div class="my-custom-class-for-errors">
         {{ form_errors(form) }}
     </div>
@@ -16,10 +85,34 @@
             {{ form_row(form.nationalite,
             {'attr':{'class':'form-control'}}) }}
         </div>
+        <div class="form-group" id="some-custom-id">
+         <label>Film Joué :</label>    
+        
+        <SELECT class="form-control" name="FILM" size="1">
+        {% for F in film %}
+        
+                <OPTION>{{F.titre}}
+              {% endfor %}  
+        </SELECT>
+           
+        </div>
         
         <div class="form-group" id="some-custom-id">
             {{ form_row(form.Enregistrer,
             {'attr':{'class':'form-control'}}) }}
         </div>
-   
+     <p><a href="{{path('Acteur')}}" class="btn btn-info btn-xs" role="button">Retour</a> </p>
+
 {{ form_end(form) }}
+
+    </div>
+
+    
+</div>
+
+        </div>
+
+
+
+</body>
+</html>

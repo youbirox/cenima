@@ -82,6 +82,17 @@ $(document).ready(function() {
             {{ form_row(form.nationalite,
             {'attr':{'class':'form-control'}}) }}
         </div>
+        <div class="form-group" id="some-custom-id">
+         <label>Film Joué :</label>    
+        
+        <SELECT class="form-control" name="FILM" size="1">
+        {% for F in film %}
+        
+                <OPTION>{{F.titre}}
+              {% endfor %}  
+        </SELECT>
+           
+        </div>
         
         <div class="form-group" id="some-custom-id">
             {{ form_row(form.Enregistrer,
@@ -114,7 +125,7 @@ $(document).ready(function() {
                 <td>{{ A.nomPrenom }}</td>
                 <td>{{ A.dateNaissance|date('Y-m-d') }}</td>
                 <td>{{ A.nationalite }}</td>
-                <td>{{ A.film.titre }}</td>
+                <td>{{ A.film.titre|default('Aucun Film joué') }}</td>
                 <td><a href="{{ path('acteurEdit',{'id':A.id}) }}"><i class="fa fa-edit" style="font-size:26px"></i></a>
                 <a href="{{ path('acteurDel',{'id':A.id}) }}"><i style="font-size:26px;color:red" class='material-icons'>delete</i></a>
                 </td>

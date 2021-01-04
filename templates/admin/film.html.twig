@@ -132,11 +132,11 @@ $(document).ready(function() {
             {% for F in film %}
                 
                 <td>{{ F.titre }}</td>
-                <td>{{ F.duree }}</td>
+                <td>{{ F.duree }} mn</td>
                 <td>{{ F.dateSortie|date('Y-m-d') }}</td>
                 <td>{{ F.note }}\20</td>
                 <td>{{ F.ageMinimal }}</td>
-                <td>{{ F.genre.nom|default('Noting') }}</td>
+                <td>{{ F.genre.nom|default('Aucun genre') }}</td>
                 <td><a href="{{ path('acteurEdit',{'id':F.id}) }}"><i class="fa fa-edit" style="font-size:26px"></i></a>
                 <a href="{{ path('filmDel',{'id':F.id}) }}"><i style="font-size:26px;color:red" class='material-icons'>delete</i></a>
                 </td>
